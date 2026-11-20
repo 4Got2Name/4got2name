@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4got2name</title>
+<meta name="description" content="Music, projects and a few useful toys in one place.">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Permanent+Marker&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css?v=20261121">
+<script src="figures.js?v=20261121"></script>
+<script src="site.js?v=20261121"></script>
+</head>
+<body data-page="home">
+<a class="skip" href="#main">Skip to content</a>
+<div class="ticker" id="ticker" aria-hidden="true"></div>
+<header class="top">
+  <a class="brand" href="index.html"><img src="assets/logo-main.png" alt="4got2name, home" width="46" height="46"></a>
+  <nav aria-label="Pages">
+    <a href="index.html" aria-current="page">Home</a>
+    <a href="music.html">Music</a>
+    <a href="projects.html">Projects</a>
+    <a href="draw.html">Paint</a>
+    <a href="lab.html">Photo Lab</a>
+    <a href="tools.html">Tools</a>
+  </nav>
+</header>
+
+<main id="main" class="sheet">
+  <section class="profile">
+    <div class="avatar"><img src="assets/logo-main.png" alt="" width="200" height="200"></div>
+    <div>
+      <p class="label">Profile</p>
+      <h1>4got2name</h1>
+      <p class="bio">Can't pick just one interest, so it's music, code, art and whatever I get curious about next.</p>
+      <nav class="hub" id="hub" aria-label="My profiles"></nav>
+    </div>
+  </section>
+
+  <h2>Pages</h2>
+  <ul class="cards">
+    <li><a href="music.html"><svg class="card-logo" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M40 74 V26 L84 16 V64"/><path d="M40 40 L84 30"/><path d="M40 74 a11 8 -20 1 1 -22 -6 a11 8 -20 1 1 22 6Z"/><path d="M84 64 a11 8 -20 1 1 -22 -6 a11 8 -20 1 1 22 6Z"/></svg><strong>Music</strong><span>Four playlists as TV channels. Flip and listen.</span></a></li>
+    <li><a href="projects.html"><svg class="card-logo" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M34 28 L12 50 L34 72"/><path d="M66 28 L88 50 L66 72"/><path d="M57 20 L43 80"/></svg><strong>Projects</strong><span>Code from GitHub, videos and Pinterest boards.</span></a></li>
+    <li><a href="draw.html"><svg class="card-logo" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 12 H82 V60 H18Z"/><path d="M28 46 C36 22 46 56 56 34 C62 20 70 30 74 24"/><path d="M50 60 V72"/><path d="M50 68 L32 90"/><path d="M50 68 L68 90"/><path d="M30 12 V6 H70 V12"/></svg><strong>Paint</strong><span>Pen, spray, eraser. Save as PNG.</span></a></li>
+    <li><a href="lab.html"><svg class="card-logo" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 32 H30 L36 20 H64 L70 32 H90 V80 H10Z"/><path d="M64 56 a14 14 0 1 1 -28 0 a14 14 0 1 1 28 0"/><path d="M78 42 H84"/></svg><strong>Photo Lab</strong><span>Turn a photo into a xerox, halftone or duotone.</span></a></li>
+    <li><a href="tools.html"><svg class="card-logo" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g transform="rotate(45 50 50)"><path d="M42 60 H58 V86 Q58 93 50 93 Q42 93 42 86Z"/><path d="M50 60 V28"/><path d="M44 28 H56 L50 12Z"/></g><g transform="rotate(-45 50 50)"><path d="M34 8 V22 Q34 36 50 36 Q66 36 66 22 V8"/><path d="M44 8 V20 Q50 26 56 20 V8"/><path d="M44 34 V86 Q50 94 56 86 V34"/></g></svg><strong>Tools</strong><span>Encoder, QR codes, color and contrast, JSON, palette from a photo, passwords. All local.</span></a></li>
+    <li class="soon"><div><svg class="card-logo" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M32 34 C32 10 72 10 70 34 C69 50 50 50 50 66"/><path d="M50 82 V84"/></svg><strong>Coming soon</strong><span>Stay tuned.</span></div></li>
+  </ul>
+</main>
+
+<footer class="foot">
+  <p class="clock">Your local time: <time id="clock"></time> <span id="tz"></span></p>
+  <p>No trackers or analytics of my own. Embedded Spotify, SoundCloud, YouTube and Pinterest widgets follow their own rules.</p>
+</footer>
+
+<script src="config.js?v=20261121"></script>
+<script src="lib.js?v=20261121"></script>
+<script src="home.js?v=20261121"></script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tools · 4got2name</title>
+<meta name="description" content="Encoding and a password generator, all local.">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Permanent+Marker&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css?v=20261121">
+<script src="figures.js?v=20261121"></script>
+<script src="site.js?v=20261121"></script>
+</head>
+<body data-page="tools">
+<a class="skip" href="#main">Skip to content</a>
+<div class="ticker" id="ticker" aria-hidden="true"></div>
+<header class="top">
+  <a class="brand" href="index.html"><img src="assets/logo-main.png" alt="4got2name, home" width="46" height="46"></a>
+  <nav aria-label="Pages">
+    <a href="index.html">Home</a>
+    <a href="music.html">Music</a>
+    <a href="projects.html">Projects</a>
+    <a href="draw.html">Paint</a>
+    <a href="lab.html">Photo Lab</a>
+    <a href="tools.html" aria-current="page">Tools</a>
+  </nav>
+</header>
+
+<main id="main" class="sheet">
+  <h1>Tools</h1>
+  <p class="lead">Small things that come up in development and design. Everything runs in your browser: what you type or load is never sent anywhere.</p>
+
+  <div class="toolnav" role="group" aria-label="Choose a tool">
+    <button type="button" data-tab="enc" aria-pressed="true">Encoder</button>
+    <button type="button" data-tab="qr" aria-pressed="false">QR code</button>
+    <button type="button" data-tab="color" aria-pressed="false">Colors</button>
+    <button type="button" data-tab="json" aria-pressed="false">JSON</button>
+    <button type="button" data-tab="pal" aria-pressed="false">Palette from photo</button>
+    <button type="button" data-tab="pass" aria-pressed="false">Passwords</button>
+  </div>
+
+  <section class="tool" data-pane="enc" aria-labelledby="t-enc">
+    <h2 id="t-enc">Encoder</h2>
+    <div class="enc-bar">
+      <div class="seg" role="group" aria-label="Format">
+        <button type="button" data-fmt="b64" aria-pressed="true">Base64</button>
+        <button type="button" data-fmt="hex" aria-pressed="false">Hex</button>
+        <button type="button" data-fmt="url" aria-pressed="false">URL</button>
+      </div>
+      <div class="seg" role="group" aria-label="Direction">
+        <button type="button" data-dir="enc" aria-pressed="true">Encode</button>
+        <button type="button" data-dir="dec" aria-pressed="false">Decode</button>
+      </div>
+    </div>
+    <div class="enc-grid">
+      <div class="pane">
+        <div class="pane-h"><label for="enc-in">Input</label><span id="enc-in-n">0 chars</span></div>
+        <textarea id="enc-in" spellcheck="false" placeholder="Type or paste here. The result updates as you type."></textarea>
+      </div>
+      <button type="button" id="enc-swap" class="swap" aria-label="Swap: use the result as the input and flip the direction" title="Swap">⇄</button>
+      <div class="pane">
+        <div class="pane-h"><span id="enc-out-h">Result</span><span id="enc-out-n"></span></div>
+        <pre class="out" id="enc-out"></pre>
+      </div>
+    </div>
+    <div class="row" style="margin-top:14px">
+      <button type="button" id="enc-copy">Copy result</button>
+      <button type="button" id="enc-clear">Clear</button>
+    </div>
+    <p class="note" id="enc-note" role="status"></p>
+  </section>
+
+  <section class="tool" data-pane="qr" aria-labelledby="t-qr" hidden>
+    <h2 id="t-qr">QR code</h2>
+    <div class="qr-grid">
+      <div>
+        <label class="field">Text or link <textarea id="qr-in" spellcheck="false" placeholder="https://4got2name.com"></textarea></label>
+        <label class="field">Error correction
+          <select id="qr-ecc">
+            <option value="L">L: about 7% can be damaged</option>
+            <option value="M" selected>M: about 15%</option>
+            <option value="Q">Q: about 25%</option>
+            <option value="H">H: about 30%</option>
+          </select></label>
+        <div class="row">
+          <button type="button" id="qr-svg" disabled>Download SVG</button>
+          <button type="button" id="qr-png" disabled>Download PNG</button>
+        </div>
+        <p class="note" id="qr-note" role="status"></p>
+      </div>
+      <div class="qr-box" id="qr-preview" aria-live="polite"><p class="unset">The code appears here.</p></div>
+    </div>
+  </section>
+
+  <section class="tool" data-pane="color" aria-labelledby="t-color" hidden>
+    <h2 id="t-color">Colors</h2>
+    <h3>Convert</h3>
+    <div class="color-row">
+      <input type="color" id="col-pick" value="#d9a23a" aria-label="Pick a color">
+      <label class="field" style="margin:0;flex:1">Any format: #hex, rgb(), hsl()
+        <input type="text" id="col-in" value="#d9a23a" spellcheck="false"></label>
+    </div>
+    <div class="values" id="col-out" aria-live="polite"></div>
+    <h3>Contrast checker (WCAG)</h3>
+    <div class="contrast-grid">
+      <div class="color-row">
+        <input type="color" id="fg-pick" value="#f0e8d0" aria-label="Pick the text color">
+        <label class="field" style="margin:0;flex:1">Text <input type="text" id="fg-in" value="#f0e8d0" spellcheck="false"></label>
+      </div>
+      <div class="color-row">
+        <input type="color" id="bg-pick" value="#0b0b0b" aria-label="Pick the background color">
+        <label class="field" style="margin:0;flex:1">Background <input type="text" id="bg-in" value="#0b0b0b" spellcheck="false"></label>
+      </div>
+    </div>
+    <div class="row" style="margin-top:12px"><button type="button" id="ct-swap">Swap colors</button></div>
+    <div class="contrast-out">
+      <div class="sample" id="ct-sample">Sample text, the quick brown fox. <strong>Large bold sample</strong></div>
+      <div id="ct-result" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="tool" data-pane="json" aria-labelledby="t-json" hidden>
+    <h2 id="t-json">JSON</h2>
+    <div class="cols">
+      <div class="pane">
+        <div class="pane-h"><label for="json-in">Input</label><span id="json-in-n">0 chars</span></div>
+        <textarea id="json-in" spellcheck="false" placeholder='{"paste":"JSON here"}'></textarea>
+      </div>
+      <div class="pane">
+        <div class="pane-h"><span>Result</span><span id="json-out-n"></span></div>
+        <pre class="out" id="json-out"></pre>
+      </div>
+    </div>
+    <div class="row" style="margin-top:14px">
+      <button type="button" id="json-fmt">Format</button>
+      <button type="button" id="json-min">Minify</button>
+      <label class="inline">Indent
+        <select id="json-indent"><option value="2" selected>2 spaces</option><option value="4">4 spaces</option><option value="tab">tab</option></select></label>
+      <label class="inline"><input type="checkbox" id="json-sort"> sort keys</label>
+      <button type="button" id="json-copy">Copy result</button>
+    </div>
+    <p class="note" id="json-note" role="status"></p>
+    <p class="note">Numbers are read as JavaScript doubles: integers above 9007199254740991 lose precision.</p>
+  </section>
+
+  <section class="tool" data-pane="pal" aria-labelledby="t-pal" hidden>
+    <h2 id="t-pal">Palette from photo</h2>
+    <div class="qr-grid">
+      <div>
+        <label class="field">Photo <input type="file" id="pal-file" accept="image/*"></label>
+        <label class="field">Colors <output id="pal-n-o">6</output>
+          <input type="range" id="pal-n" min="3" max="10" step="1" value="6"></label>
+        <p class="note" id="pal-note" role="status"></p>
+      </div>
+      <div>
+        <canvas id="pal-img" class="pal-img" width="10" height="10" role="img" aria-label="Loaded photo" hidden></canvas>
+        <p class="unset" id="pal-empty">Load a photo to pull its main colors. Click a swatch to copy its hex.</p>
+      </div>
+    </div>
+    <div class="swatches" id="pal-out"></div>
+  </section>
+
+  <section class="tool" data-pane="pass" aria-labelledby="t-pass" hidden>
+    <h2 id="t-pass">Password generator</h2>
+    <label class="field">Length <output id="pass-len-o">20</output>
+      <input type="range" id="pass-len" min="8" max="64" step="1" value="20"></label>
+    <fieldset>
+      <legend>Characters</legend>
+      <label><input type="checkbox" id="p-lower" checked> lowercase a-z</label>
+      <label><input type="checkbox" id="p-upper" checked> uppercase A-Z</label>
+      <label><input type="checkbox" id="p-digit" checked> digits 0-9</label>
+      <label><input type="checkbox" id="p-sym"> symbols !@#$%^&amp;*-_=+</label>
+    </fieldset>
+    <div class="row"><button type="button" id="pass-go">Generate</button><button type="button" id="pass-copy">Copy</button></div>
+    <pre class="out" id="pass-out" aria-live="polite" style="margin-top:12px"></pre>
+    <p class="note" id="pass-note" role="status"></p>
+    <p class="note">Uses crypto.getRandomValues without modulo bias. A password is not guaranteed to contain every selected set.</p>
+  </section>
+</main>
+
+<footer class="foot">
+  <p class="clock">Your local time: <time id="clock"></time> <span id="tz"></span></p>
+  <p>No trackers or analytics of my own. Embedded Spotify, SoundCloud, YouTube and Pinterest widgets follow their own rules.</p>
+</footer>
+
+<script src="config.js?v=20261121"></script>
+<script src="textlib.js?v=20261121"></script>
+<script src="colorlib.js?v=20261121"></script>
+<script src="vendor/qrcode-generator-2.0.4.js?v=20261121"></script>
+<script src="qrlib.js?v=20261121"></script>
+<script src="tools.js?v=20261121"></script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paint · 4got2name</title>
+<meta name="description" content="A small paint editor in the browser.">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Permanent+Marker&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css?v=20261121">
+<script src="figures.js?v=20261121"></script>
+<script src="site.js?v=20261121"></script>
+</head>
+<body data-page="draw">
+<a class="skip" href="#main">Skip to content</a>
+<div class="ticker" id="ticker" aria-hidden="true"></div>
+<header class="top">
+  <a class="brand" href="index.html"><img src="assets/logo-main.png" alt="4got2name, home" width="46" height="46"></a>
+  <nav aria-label="Pages">
+    <a href="index.html">Home</a>
+    <a href="music.html">Music</a>
+    <a href="projects.html">Projects</a>
+    <a href="draw.html" aria-current="page">Paint</a>
+    <a href="lab.html">Photo Lab</a>
+    <a href="tools.html">Tools</a>
+  </nav>
+</header>
+
+<main id="main" class="sheet">
+  <h1>Paint</h1>
+  <p class="lead">A small editor: pen, spray, eraser and a short palette. Nothing is uploaded, everything stays in your browser.</p>
+
+  <div class="tools" role="toolbar" aria-label="Drawing tools">
+    <div class="tgroup">
+      <span class="tlabel">Tool</span>
+      <div class="seg">
+        <button type="button" data-tool="pen" aria-pressed="true">Pen</button>
+        <button type="button" data-tool="spray" aria-pressed="false">Spray</button>
+        <button type="button" data-tool="stamp" aria-pressed="false">Stamp</button>
+        <button type="button" data-tool="eraser" aria-pressed="false">Eraser</button>
+      </div>
+    </div>
+    <div class="tgroup">
+      <span class="tlabel">Size</span>
+      <div class="seg sizes" role="group" aria-label="Size">
+        <button type="button" data-size="2" aria-pressed="false">S</button>
+        <button type="button" data-size="5" aria-pressed="true">M</button>
+        <button type="button" data-size="10" aria-pressed="false">L</button>
+        <button type="button" data-size="18" aria-pressed="false">XL</button>
+      </div>
+    </div>
+    <div class="tgroup">
+      <span class="tlabel">Color</span>
+      <div class="palette" id="palette" role="group" aria-label="Colors"></div>
+    </div>
+    <div class="tgroup">
+      <span class="tlabel">Canvas</span>
+      <div class="seg">
+        <button type="button" id="undo">Undo</button>
+        <button type="button" id="clear">Clear</button>
+        <button type="button" id="save">Save PNG</button>
+      </div>
+    </div>
+  </div>
+  <p class="label" style="margin-top:22px">Stamps: pick one, then click the canvas. Size and color follow the buttons.</p>
+  <div class="stamps" id="stamps" role="group" aria-label="Stamps"></div>
+  <canvas id="paint" width="960" height="640" role="img" aria-label="Drawing canvas" style="margin-top:18px"></canvas>
+
+</main>
+
+<footer class="foot">
+  <p class="clock">Your local time: <time id="clock"></time> <span id="tz"></span></p>
+  <p>No trackers or analytics of my own. Embedded Spotify, SoundCloud, YouTube and Pinterest widgets follow their own rules.</p>
+</footer>
+
+<script src="config.js?v=20261121"></script>
+<script src="lib.js?v=20261121"></script>
+<script src="draw.js?v=20261121"></script>
+</body>
+</html>

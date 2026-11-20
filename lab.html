@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Photo Lab · 4got2name</title>
+<meta name="description" content="Turn a photo into a xerox, halftone or duotone.">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Permanent+Marker&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css?v=20261121">
+<script src="figures.js?v=20261121"></script>
+<script src="site.js?v=20261121"></script>
+</head>
+<body data-page="lab">
+<a class="skip" href="#main">Skip to content</a>
+<div class="ticker" id="ticker" aria-hidden="true"></div>
+<header class="top">
+  <a class="brand" href="index.html"><img src="assets/logo-main.png" alt="4got2name, home" width="46" height="46"></a>
+  <nav aria-label="Pages">
+    <a href="index.html">Home</a>
+    <a href="music.html">Music</a>
+    <a href="projects.html">Projects</a>
+    <a href="draw.html">Paint</a>
+    <a href="lab.html" aria-current="page">Photo Lab</a>
+    <a href="tools.html">Tools</a>
+  </nav>
+</header>
+
+<main id="main" class="sheet">
+  <h1>Photo Lab</h1>
+  <p class="lead">Load a photo and turn it into a xerox, halftone or duotone, zine style. The photo never leaves your browser. For speed, large images are scaled down to 1200 px on the long side.</p>
+
+  <div class="editor">
+    <div>
+      <label class="field">Photo <input type="file" id="file" accept="image/*"></label>
+
+      <fieldset id="modes">
+        <legend>Effect</legend>
+        <div class="chips">
+        <label><input type="radio" name="mode" value="halftone" checked> Halftone</label>
+        <label><input type="radio" name="mode" value="xerox"> Xerox (black and light)</label>
+        <label><input type="radio" name="mode" value="duotone"> Duotone</label>
+        <label><input type="radio" name="mode" value="gray"> Grayscale</label>
+        <label><input type="radio" name="mode" value="original"> Original</label>
+        </div>
+      </fieldset>
+
+      <label class="field">Brightness <output id="brightness-o">0</output>
+        <input type="range" id="brightness" min="-100" max="100" step="1" value="0"></label>
+      <label class="field">Contrast <output id="contrast-o">0</output>
+        <input type="range" id="contrast" min="-100" max="100" step="1" value="0"></label>
+      <label class="field" data-for="xerox">Threshold <output id="threshold-o">128</output>
+        <input type="range" id="threshold" min="1" max="254" step="1" value="128"></label>
+      <label class="field" data-for="halftone">Dot size <output id="cell-o">8</output>
+        <input type="range" id="cell" min="4" max="24" step="1" value="8"></label>
+      <label class="field" data-for="halftone">Grid angle <output id="angle-o">45</output>
+        <input type="range" id="angle" min="0" max="90" step="1" value="45"></label>
+      <label class="field" data-for="xerox duotone halftone">Light color
+        <select id="light">
+          <option value="paper">Paper</option>
+          <option value="accent">Site accent</option>
+        </select></label>
+
+      <div class="row">
+        <button type="button" id="reset">Reset</button>
+        <button type="button" id="save" disabled>Save PNG</button>
+      </div>
+      <p class="note" id="msg" aria-live="polite"></p>
+    </div>
+
+    <div class="stage" id="stage">
+      <p class="unset" id="empty">Load a photo or drag it here.</p>
+      <canvas id="out" width="640" height="420" role="img" aria-label="Processed result" hidden></canvas>
+    </div>
+  </div>
+</main>
+
+<footer class="foot">
+  <p class="clock">Your local time: <time id="clock"></time> <span id="tz"></span></p>
+  <p>No trackers or analytics of my own. Embedded Spotify, SoundCloud, YouTube and Pinterest widgets follow their own rules.</p>
+</footer>
+
+<script src="config.js?v=20261121"></script>
+<script src="imglib.js?v=20261121"></script>
+<script src="lab.js?v=20261121"></script>
+</body>
+</html>
