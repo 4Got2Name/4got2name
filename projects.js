@@ -65,22 +65,26 @@
   function initYoutube() {
     const box = $("#yt-body");
     const channelId = cfg.youtube && cfg.youtube.channelId;
+    const videoId = Lib.youtubeVideoId(cfg.youtube && cfg.youtube.video);
     const list = Lib.youtubeUploadsPlaylistId(channelId);
     const profile = Lib.safeHttps(cfg.profiles && cfg.profiles.youtube);
-    if (!list) {
-      Site.unset(box, "The video list is not connected yet (channel ID needed).");
+    if (!videoId && !list) {
+      Site.unset(box, "The video is not connected yet (video link needed).");
       if (profile) box.append(Site.externalLink(profile, "Open the channel on YouTube", "pin-link"));
       return;
     }
     const frame = document.createElement("iframe");
-    frame.src = "https://www.youtube-nocookie.com/embed/videoseries?list=" + list;
-    frame.title = "Videos from the channel";
+    frame.src = videoId
+      ? "https://www.youtube-nocookie.com/embed/" + videoId
+      : "https://www.youtube-nocookie.com/embed/videoseries?list=" + list;
+    frame.title = videoId ? "Video" : "Videos from the channel";
     frame.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
     frame.referrerPolicy = "strict-origin-when-cross-origin"; // the player refuses to start (error 153) when it gets no referrer
     frame.allowFullscreen = true;
     frame.loading = "lazy";
     const p = document.createElement("p");
-    p.append(Site.externalLink("https://www.youtube.com/channel/" + channelId.trim() + "?sub_confirmation=1", "Subscribe to the channel"));
+    const link = list ? Site.externalLink("https://www.youtube.com/channel/" + channelId.trim() + "?sub_confirmation=1", "Subscribe to the channel") : null;
+    if (link) p.append(link);
     box.replaceChildren(frame, p);
   }
 

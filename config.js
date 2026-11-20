@@ -58,6 +58,8 @@ window.SITE_CONFIG = {
   },
 
   youtube: {
+    // The video shown on the Projects page (sent by you on 2026-11-21). Set to "" to show the channel's uploads playlist instead.
+    video: "https://www.youtube.com/watch?v=rHoFKy_L0wY",
     // Channel ID as you sent it. Format is valid (UC + 22 characters), but I could not open YouTube to confirm it exists.
     channelId: "UCCy2IPyHOAbft-Yca44GcJg"
   }

@@ -22,6 +22,24 @@
     return /^UC[\w-]{22}$/.test(s) ? "UU" + s.slice(2) : null;
   }
 
+  // youtube.com/watch?v=ID, youtu.be/ID, /embed/ID, /shorts/ID or a bare 11-character ID -> ID
+  function youtubeVideoId(input) {
+    if (typeof input !== "string") return null;
+    const s = input.trim();
+    if (/^[\w-]{11}$/.test(s)) return s;
+    let u;
+    try { u = new URL(s); } catch (e) { return null; }
+    if (u.protocol !== "https:") return null;
+    const host = u.hostname.replace(/^www\.|^m\./, "");
+    let id = null;
+    if (host === "youtu.be") id = u.pathname.slice(1).split("/")[0];
+    else if (host === "youtube.com" || host === "youtube-nocookie.com") {
+      const m = u.pathname.match(/^\/(?:embed|shorts|live)\/([^/]+)/);
+      id = m ? m[1] : (u.pathname === "/watch" ? u.searchParams.get("v") : null);
+    }
+    return id && /^[\w-]{11}$/.test(id) ? id : null;
+  }
+
   function isGithubUser(name) {
     return typeof name === "string" && /^[A-Za-z\d](?:[A-Za-z\d]|-(?=[A-Za-z\d])){0,38}$/.test(name.trim());
   }
@@ -109,6 +127,6 @@
     return pts;
   }
 
-  return { parseSpotifyPlaylistId, youtubeUploadsPlaylistId, isGithubUser, safeHttps,
+  return { parseSpotifyPlaylistId, youtubeUploadsPlaylistId, youtubeVideoId, isGithubUser, safeHttps,
     pinterestBoardUrl, parseChannels, parseBoards, pickRepos, sprayPoints, soundcloudEmbedUrl, parseTracks };
 });
