@@ -5,17 +5,39 @@
   const INK = "#0d0d0d";
   const PAPER = "#efe6cf";
 
-  // The site's own limited palette: ink, grey, sand, the current accent, paper, plus the four muted music accents.
+  // Neutrals, the current site accent, then a spectrum from yellow round to pink plus two earth tones (no pure red: red stays in the logo).
   const PALETTE = [
     { c: INK, label: "ink" },
-    { c: "#6b6b6b", label: "grey" },
-    { c: "#b8ad92", label: "sand" },
+    { c: "#3a3a3a", label: "charcoal" },
+    { c: "#8c8c8c", label: "grey" },
+    { c: "#ffffff", label: "white" },
     { accent: true, label: "current site accent" },
-    { c: "#9d93c7", label: "periwinkle" },
-    { c: "#7fb3b0", label: "teal" },
-    { c: "#a3b36b", label: "moss" },
-    { c: "#c9674a", label: "rust" },
-    { c: PAPER, label: "paper" }
+    { c: "#f5cf2e", label: "yellow" },
+    { c: "#f08a24", label: "orange" },
+    { c: "#a6d63a", label: "lime" },
+    { c: "#37b45b", label: "green" },
+    { c: "#1fb5a4", label: "teal" },
+    { c: "#3fb7ea", label: "cyan" },
+    { c: "#3f78e0", label: "blue" },
+    { c: "#5648c9", label: "indigo" },
+    { c: "#9b5cd6", label: "violet" },
+    { c: "#dd4fb1", label: "magenta" },
+    { c: "#f6a0c0", label: "pink" },
+    { c: "#8a5a3b", label: "brown" },
+    { c: "#e4bc92", label: "skin" }
+  ];
+
+  const BACKGROUNDS = [
+    { c: PAPER, label: "paper" },
+    { c: "#ffffff", label: "white" },
+    { c: "#d9caa3", label: "sand" },
+    { c: "#bfe3f2", label: "sky" },
+    { c: "#cfe8c8", label: "mint" },
+    { c: "#f3c9d4", label: "rose" },
+    { c: "#8c8c8c", label: "grey" },
+    { c: "#2b2b2b", label: "charcoal" },
+    { c: "#14213d", label: "navy" },
+    { c: INK, label: "black" }
   ];
 
   const canvas = $("#paint");
@@ -27,6 +49,7 @@
   let stampId = window.Figures ? window.Figures.list[0].id : null;
   let size = 5;
   let swatch = PALETTE[0];
+  let bg = PAPER;
   let drawing = false;
   let last = null;
   let prevMid = null;
@@ -37,9 +60,11 @@
   ctx.lineCap = "round";
   ctx.lineJoin = "round";
 
-  function whiten() { ctx.fillStyle = PAPER; ctx.fillRect(0, 0, W, H); }
+  // The canvas keeps only the strokes (transparent elsewhere); the background color is the CSS background behind it,
+  // so changing it never touches the drawing and the eraser really erases.
+  function whiten() { ctx.clearRect(0, 0, W, H); }
   function snapshot() {
-    undoStack.push(ctx.getImageData(0, 0, W, H));
+    undoStack.push({ img: ctx.getImageData(0, 0, W, H), bg });
     if (undoStack.length > MAX_UNDO) undoStack.shift();
   }
   function pos(e) {
@@ -50,7 +75,7 @@
     ];
   }
   function currentColor() {
-    if (tool === "eraser") return PAPER;
+    if (tool === "eraser") return "#000"; // any opaque color: destination-out only uses the alpha
     if (swatch.accent) return getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#d9a23a";
     return swatch.c;
   }
@@ -87,6 +112,7 @@
     canvas.setPointerCapture(e.pointerId);
     snapshot();
     strokeColor = currentColor();
+    ctx.globalCompositeOperation = tool === "eraser" ? "destination-out" : "source-over";
     if (tool === "stamp") { const sp = pos(e); stampAt(sp[0], sp[1]); return; }
     drawing = true;
     const p = pos(e);
@@ -155,23 +181,76 @@
     document.querySelectorAll("[data-size]").forEach((o) => o.setAttribute("aria-pressed", String(o === b)));
   }));
 
+  function setPressed(box, el) {
+    box.querySelectorAll("button, .custom").forEach((o) => {
+      o.setAttribute("aria-pressed", String(o === el));
+      o.classList.toggle("on", o === el);
+    });
+  }
+
+  // A round swatch that opens the browser's color picker; it shows a rainbow until a color is chosen.
+  function customPicker(box, label, initial, onPick) {
+    const wrap = document.createElement("label");
+    wrap.className = "custom";
+    wrap.title = label;
+    const input = document.createElement("input");
+    input.type = "color";
+    input.value = initial;
+    input.setAttribute("aria-label", label);
+    input.addEventListener("input", () => {
+      wrap.style.background = input.value;
+      setPressed(box, wrap);
+      onPick(input.value);
+    });
+    wrap.append(input);
+    box.append(wrap);
+  }
+
   const pal = $("#palette");
   PALETTE.forEach((sw, i) => {
     const b = document.createElement("button");
     b.type = "button";
     b.style.background = sw.accent ? "var(--accent)" : sw.c;
     b.setAttribute("aria-label", "Color: " + sw.label);
-    b.setAttribute("aria-pressed", String(i === 0));
+    b.title = sw.label;
     b.addEventListener("click", () => {
       swatch = sw;
       if (tool === "eraser") {
         tool = "pen";
         document.querySelectorAll("[data-tool]").forEach((o) => o.setAttribute("aria-pressed", String(o.dataset.tool === "pen")));
       }
-      pal.querySelectorAll("button").forEach((o) => o.setAttribute("aria-pressed", String(o === b)));
+      setPressed(pal, b);
     });
     pal.append(b);
   });
+  customPicker(pal, "Custom color", "#f08a24", (value) => {
+    swatch = { c: value, label: "custom" };
+    if (tool === "eraser") {
+      tool = "pen";
+      document.querySelectorAll("[data-tool]").forEach((o) => o.setAttribute("aria-pressed", String(o.dataset.tool === "pen")));
+    }
+  });
+  setPressed(pal, pal.querySelector("button"));
+
+  const bgBox = $("#bgpalette");
+  function setBg(value, el) {
+    bg = value;
+    canvas.style.background = value;
+    if (el !== undefined) setPressed(bgBox, el);
+  }
+  const bgButtons = [];
+  BACKGROUNDS.forEach((sw) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.style.background = sw.c;
+    b.setAttribute("aria-label", "Background: " + sw.label);
+    b.title = sw.label;
+    b.addEventListener("click", () => { snapshot(); setBg(sw.c, b); });
+    bgBox.append(b);
+    bgButtons.push({ b, c: sw.c });
+  });
+  customPicker(bgBox, "Custom background", "#bfe3f2", (value) => setBg(value));
+  setPressed(bgBox, bgBox.querySelector("button"));
 
   const stampBox = $("#stamps");
   const NS = "http://www.w3.org/2000/svg";
@@ -202,11 +281,21 @@
 
   $("#undo").addEventListener("click", () => {
     const prev = undoStack.pop();
-    if (prev) ctx.putImageData(prev, 0, 0);
+    if (!prev) return;
+    ctx.putImageData(prev.img, 0, 0);
+    const match = bgButtons.find((x) => x.c === prev.bg);
+    setBg(prev.bg, match ? match.b : null);
   });
   $("#clear").addEventListener("click", () => { snapshot(); whiten(); });
   $("#save").addEventListener("click", () => {
-    canvas.toBlob((blob) => {
+    const out = document.createElement("canvas");
+    out.width = W;
+    out.height = H;
+    const octx = out.getContext("2d");
+    octx.fillStyle = bg;
+    octx.fillRect(0, 0, W, H);
+    octx.drawImage(canvas, 0, 0);
+    out.toBlob((blob) => {
       if (!blob) return;
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");

@@ -214,7 +214,7 @@
   function buildScenes() {
     const defs = document.createElement("div");
     defs.setAttribute("aria-hidden", "true");
-    defs.innerHTML = '<svg width="0" height="0" style="position:absolute"><filter id="wobble" x="-5%" y="-5%" width="110%" height="110%">' +
+    defs.innerHTML = '<svg width="0" height="0" style="position:absolute"><filter id="wobble" x="-12%" y="-12%" width="124%" height="124%">' +
       '<feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="2" seed="4" result="n"/>' +
       '<feDisplacementMap in="SourceGraphic" in2="n" scale="7" xChannelSelector="R" yChannelSelector="G"/></filter>' +
       '<filter id="wobble-s" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" seed="9" result="n"/>' +
